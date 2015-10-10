@@ -1,0 +1,4 @@
+set_instance_assignment -name PLL_COMPENSATION_MODE DIRECT -to "*pll10MHz_0002*|altera_pll:altera_pll_i*|*"
+ 
+set_instance_assignment -name PLL_AUTO_RESET ON -to "*pll10MHz_0002*|altera_pll:altera_pll_i*|*"
+set_instance_assignment -name PLL_BANDWIDTH_PRESET AUTO -to "*pll10MHz_0002*|altera_pll:altera_pll_i*|*"

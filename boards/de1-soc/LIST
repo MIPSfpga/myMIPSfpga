@@ -1,0 +1,16 @@
+# A list of all HDL project sources relative to the source directory.
+#
+# This file must be kept up-to-date. It is used when creating the project
+# hierarchy and when building the project.
+
+
+### Top-level
+mipsfpga_de1_soc.v
+
+hexLEDDriver.v
+
+### Clocks
+pll10MHz.qip
+
+### Timing Constraints
+DE1_SOC.sdc
