@@ -1,0 +1,93 @@
+MIPSfpga demo project
+=====================
+
+0. extract rtl_up/ dir from MIPSfpga-Getting-Started-v1.2.zip
+into rtl/ dir.
+
+So rtl/ dir will contain these dirs:
+
+    rtl
+     |__ mipsfpga-plus
+     |__ rtl_up
+     |__ uart16550-1.5
+
+
+1. Add Quartus II bin/ dir to the PATH, e.g.
+
+    $ export PATH=$PATH:/opt/altera/13.1/quartus/bin
+
+or change QUARTUS variable definition in make_project.sh
+
+
+2. Run make_project.sh
+
+    $ ./make_project.sh <board> [<project dir>]
+
+E.g.
+
+    $ ./make_project.sh de0-nano
+
+the proj/ dir will be created.
+
+
+3. Compile the project
+
+    $ cd proj
+    $ make
+
+
+Connecting UART (9600 8n1)
+==========================
+
+DE1-SoC
+-------
+
+    .------.
+    | 1   2|  2 (GPIO_0[1]) fpga --> host
+    | 3   4|  4 (GPIO_0[3]) fpga <-- host
+    | .....|
+    \    12| 12 (GND)
+     |     |
+    /      |
+    |      |
+    |      |
+    |39  40|
+    '------'
+      GPIO0
+
+
+DE0-Nano
+--------
+
+    .------.
+    | 1   2|
+    | 3   4|
+    | .....|
+    \      |
+     |     |
+    /      |
+    |    30| 30 (GND)
+    | .....|
+    |39  40| 40 (GPIO_0[33]) fpga --> host
+    '------' 39 (GPIO_0[32]) fpga <-- host
+      GPIO0
+
+
+Marsohod3
+---------
+
+           CN2
+   
+     1 --  O o  -- 2
+           o X
+           o o
+           o o
+           o o  -- 10 (IO[5])  fpga --> host
+           o o  -- 12 (IO[7])  fpga <-- host
+    13 --  o o  -- 14 (GND)
+
+
+See also
+
+  * FTDI_BD0 --- 141 (IO8_141/DIFFIO_RX_T52N)
+  * FTDI_BD1 --- 140 (IO8_140/DIFFIO_RX_T52P)
