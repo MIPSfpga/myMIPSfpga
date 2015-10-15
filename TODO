@@ -1,0 +1,9 @@
+TODO
+====
+
+  * use more recent mipsfpga-plus;
+  * add docs & photos;
+  * add SDRAM support;
+  * add Icarus Verilog stuff;
+  * uart16550-1.5: add independent baudrate clock input (i.g. use 1843200 Hz clock rate);
+  * add Windows bat-files.
