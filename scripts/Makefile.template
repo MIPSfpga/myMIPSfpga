@@ -1,0 +1,34 @@
+QUARTUS=TODO_QUARTUS_TODO
+PROJECT=TODO_PROJECT_TODO
+BITS="--64bit"
+
+$(PROJECT).sof: $(PROJECT).qsf
+	$(QUARTUS)sh $(BITS) --flow compile $(PROJECT)
+
+$(PROJECT).svf: $(PROJECT).sof
+	$(QUARTUS)cpf -c -n p -q 2MHz -g 3.3 $< $@
+
+$(PROJECT).pof: $(PROJECT).sof
+	$(QUARTUS)cpf -c -d epcs4 $< $@
+
+.PHONY: clean
+clean:
+	rm -rf \
+		PLLJ_PLLSPE_INFO.txt \
+		$(PROJECT).asm.rpt \
+		$(PROJECT).done \
+		$(PROJECT).fit.rpt \
+		$(PROJECT).fit.smsg \
+		$(PROJECT).fit.summary \
+		$(PROJECT).flow.rpt \
+		$(PROJECT).jdi \
+		$(PROJECT).map.rpt \
+		$(PROJECT).map.summary \
+		$(PROJECT).pin \
+		$(PROJECT).sof \
+		$(PROJECT).sta.rpt \
+		$(PROJECT).sta.summary \
+		$(PROJECT).svf \
+		$(PROJECT)_assignment_defaults.qdf \
+		db/ \
+		incremental_db/
