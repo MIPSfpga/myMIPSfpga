@@ -12,7 +12,7 @@
     `define MFP_INITIALIZE_MEMORY_FROM_TXT_FILE
 `endif
 
-`define MFP_RAM_RESET_INIT_FILENAME   "ram_reset_init.txt"
+`define MFP_RAM_RESET_INIT_FILENAME   "nmon.txt"
 `define MFP_RAM_INIT_FILENAME         "ram_program_init.txt"
 
 `define MFP_USE_UART_PROGRAM_LOADER

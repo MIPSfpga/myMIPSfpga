@@ -28,7 +28,7 @@ module mfp_dual_port_ram
         // Unfortunately neither Xilinx Vivado nor Altera Quartus II
         // support parametrization for synthesizable $readmem
 
-        initial $readmemh ("ram_reset_init.txt", ram);
+        initial $readmemh ("nmon.txt", ram);
 
     `elsif MFP_INITIALIZE_MEMORY_FROM_TXT_FILE_FOR_SIMULATION
 
