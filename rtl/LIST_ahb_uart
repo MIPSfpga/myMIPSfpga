@@ -1,0 +1,12 @@
+rtl/verilog/raminfr.v
+rtl/verilog/timescale.v
+rtl/verilog/uart_debug_if.v
+rtl/verilog/uart_defines.v
+rtl/verilog/uart_receiver.v
+rtl/verilog/uart_regs.v
+rtl/verilog/uart_rfifo.v
+rtl/verilog/uart_sync_flops.v
+rtl/verilog/uart_tfifo.v
+rtl/verilog/uart_ahb_top.v
+rtl/verilog/uart_transmitter.v
+rtl/verilog/uart_wb.v
