@@ -298,8 +298,6 @@ module mfp_system
     assign SI_TraceDisable = 1'b1;     // Disables trace hardware
     assign SI_AHBStb       = 1'b1;     // AHB: Signal indicating phase and frequency relationship between clk and hclk.
 
-    assign UART_TX         = 1'b0;
-
     mfp_ahb_lite_matrix_with_loader ahb_lite_matrix
     (
         .HCLK          (   HCLK          ),

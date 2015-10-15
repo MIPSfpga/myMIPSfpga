@@ -27,22 +27,18 @@ module mfp_ahb_lite_matrix
     output        UART_TX
 );
 
-    // UART is not supported this implementation of the module
-
-    assign UART_TX = 1'b0;
-
-    wire [ 2:0] HSEL;
+    wire [ 3:0] HSEL;
 
     mfp_ahb_lite_decoder decoder (HADDR, HSEL);
 
-    reg  [ 2:0] HSEL_dly;
+    reg  [ 3:0] HSEL_dly;
 
     always @ (posedge HCLK)
         HSEL_dly <= HSEL;
 
-    wire        HREADY_0 , HREADY_1 , HREADY_2 ;
-    wire [31:0] HRDATA_0 , HRDATA_1 , HRDATA_2 ;
-    wire        HRESP_0  , HRESP_1  , HRESP_2  ;
+    wire        HREADY_0 , HREADY_1 , HREADY_2 , HREADY_3 ;
+    wire [31:0] HRDATA_0 , HRDATA_1 , HRDATA_2 , HRDATA_3 ;
+    wire        HRESP_0  , HRESP_1  , HRESP_2  , HRESP_3  ;
 
     mfp_ahb_ram_slave
     # (
@@ -116,7 +112,28 @@ module mfp_ahb_lite_matrix
         .IO_GreenLEDs ( IO_GreenLEDs )
     );
 
-    assign HREADY = HREADY_0 | HREADY_1 | HREADY_2;
+    uart_ahb_top uart0(
+        .HCLK         ( HCLK         ),
+        .HRESETn      ( HRESETn      ),
+        .HADDR        ( HADDR[5:0]   ),
+        .HBURST       ( HBURST       ),
+        .HMASTLOCK    ( HMASTLOCK    ),
+        .HPROT        ( HPROT        ),
+        .HSEL         ( HSEL [3]     ),
+        .HSIZE        ( HSIZE        ),
+        .HTRANS       ( HTRANS       ),
+        .HWDATA       ( HWDATA       ),
+        .HWRITE       ( HWRITE       ),
+        .HRDATA       ( HRDATA_3     ),
+        .HREADY       ( HREADY_3     ),
+        .HRESP        ( HRESP_3      ),
+
+        .stx_pad_o(UART_TX),
+        .srx_pad_i(UART_RX)
+);
+
+
+    assign HREADY = HREADY_0 | HREADY_1 | HREADY_2 | HREADY_3;
 
     mfp_ahb_lite_response_mux response_mux
     (
@@ -125,10 +142,12 @@ module mfp_ahb_lite_matrix
         .HRDATA_0 ( HRDATA_0 ),
         .HRDATA_1 ( HRDATA_1 ),
         .HRDATA_2 ( HRDATA_2 ),
+        .HRDATA_3 ( HRDATA_3 ),
 
         .HRESP_0  ( HRESP_0  ),
         .HRESP_1  ( HRESP_1  ),
         .HRESP_2  ( HRESP_2  ),
+        .HRESP_3  ( HRESP_3  ),
 
         .HRDATA   ( HRDATA   ),
         .HRESP    ( HRESP    )
@@ -141,7 +160,7 @@ endmodule
 module mfp_ahb_lite_decoder
 (
     input  [31:0] HADDR,
-    output [ 2:0] HSEL
+    output [ 3:0] HSEL
 );
 
     // Decode based on most significant bits of the address
@@ -158,21 +177,28 @@ module mfp_ahb_lite_decoder
 
     assign HSEL [2] = ( HADDR [28:22] == `MFP_GPIO_ADDR_MATCH      );
 
+    // UART at 0xbf000900 (physical: 0x1f000900)
+
+    //assign HSEL [3] = ( HADDR [28:8] ==  21'h7c0024);
+    assign HSEL [3] = ( HADDR [31:8] ==  24'h1f0009);
+
 endmodule
 
 //--------------------------------------------------------------------
 
 module mfp_ahb_lite_response_mux
 (
-    input      [ 2:0] HSEL,
+    input      [ 3:0] HSEL,
                
     input      [31:0] HRDATA_0,
     input      [31:0] HRDATA_1,
     input      [31:0] HRDATA_2,
+    input      [31:0] HRDATA_3,
                
     input             HRESP_0,
     input             HRESP_1,
     input             HRESP_2,
+    input             HRESP_3,
 
     output reg [31:0] HRDATA,
     output reg        HRESP
@@ -180,9 +206,10 @@ module mfp_ahb_lite_response_mux
 
     always @*
         casez (HSEL)
-	3'b??1:   begin HRDATA = HRDATA_0; HRESP = HRESP_0; end
-	3'b?10:   begin HRDATA = HRDATA_1; HRESP = HRESP_1; end
-	3'b100:   begin HRDATA = HRDATA_2; HRESP = HRESP_2; end
+	4'b???1:   begin HRDATA = HRDATA_0; HRESP = HRESP_0; end
+	4'b??10:   begin HRDATA = HRDATA_1; HRESP = HRESP_1; end
+	4'b?100:   begin HRDATA = HRDATA_2; HRESP = HRESP_2; end
+	4'b1000:   begin HRDATA = HRDATA_3; HRESP = HRESP_3; end
 	default:  begin HRDATA = HRDATA_1; HRESP = HRESP_1; end
         endcase
 

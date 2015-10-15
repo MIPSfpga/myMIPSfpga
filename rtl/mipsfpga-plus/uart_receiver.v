@@ -1,4 +1,4 @@
-module uart_receiver
+module mpf_uart_receiver
 (
     input  clock,
     input  reset_n,

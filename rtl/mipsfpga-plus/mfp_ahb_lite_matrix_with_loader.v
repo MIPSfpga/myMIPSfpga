@@ -31,7 +31,7 @@ module mfp_ahb_lite_matrix_with_loader
     wire [7:0] char_data;
     wire       char_ready;
 
-    uart_receiver uart_receiver
+    mpf_uart_receiver uart_receiver
     (
         .clock      ( HCLK       ),
         .reset_n    ( HRESETn    ),
