@@ -2,6 +2,8 @@ TODO
 ====
 
   * use more recent mipsfpga-plus;
+  * can we use Marsohod3 FT2232 channel B for UART?
+  * can we use DE1-SoC on-board FT232 for UART?
   * add docs & photos;
   * add SDRAM support;
   * add Icarus Verilog stuff;
